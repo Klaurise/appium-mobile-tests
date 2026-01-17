@@ -22,7 +22,7 @@ public class LoginLogoutTest extends BaseTest {
         SideMenu sideMenu = new SideMenu(driver);
 
         loginPage.login(LoginData.STANDARD_USER.getUsername(), LoginData.STANDARD_USER.getPassword());
-        assertTrue(productsPage.isMainPageVisible());
+        assertTrue(productsPage.isProductsPageVisible());
 
         sideMenu.logout();
         assertTrue(loginPage.isLoginPageVisible());

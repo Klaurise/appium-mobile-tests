@@ -37,6 +37,7 @@ public class BasePage {
 
     public boolean isElementDisplayed(WebElement element) {
         try {
+            wait.until(ExpectedConditions.visibilityOf(element));
             return element.isDisplayed();
         } catch (Exception e) {
             return false;
@@ -48,5 +49,19 @@ public class BasePage {
                 "new UiScrollable(new UiSelector().scrollable(true).instance(0))." +
                         "scrollIntoView(new UiSelector().text(\"" + element + "\"))")).click();
 
+    }
+
+    public boolean isProductNameDisplayed(String productName) {
+        WebElement product = driver.findElement(
+                AppiumBy.androidUIAutomator("new UiSelector().text(\"" + productName + "\")")
+        );
+        return isElementDisplayed(product);
+    }
+
+    protected String getValue(WebElement element) {
+        WebElement amountElement = element.findElement(
+                AppiumBy.xpath(".//android.widget.TextView")
+        );
+        return amountElement.getText();
     }
 }

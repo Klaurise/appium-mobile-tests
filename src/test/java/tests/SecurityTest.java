@@ -34,6 +34,6 @@ public class SecurityTest extends BaseTest {
             assertTrue((loginPage.isElementDisplayed(loginPage.getErrorBanner())));
         }
         loginPage.login(LoginData.STANDARD_USER.getUsername(), LoginData.STANDARD_USER.getPassword());
-        assertFalse(productsPage.isMainPageVisible());
+        assertFalse(productsPage.isProductsPageVisible());
     }
 }

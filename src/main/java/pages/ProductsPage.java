@@ -19,11 +19,11 @@ public class ProductsPage extends BasePage {
     @AndroidFindBy(accessibility = "test-Modal Selector Button")
     private WebElement filterOption;
 
-    public boolean isMainPageVisible() {
-        return isElementDisplayed(productsTitle) && isElementDisplayed(filterOption) && isElementDisplayed(cardButton);
+    public boolean isProductsPageVisible() {
+        return isElementDisplayed(cardButton) && isElementDisplayed(productsTitle) && isElementDisplayed(filterOption);
     }
 
-    public void collectProduct(String productName) {
+    public void openProductDetailsView(String productName) {
         scrollAndClick(productName);
     }
 }
