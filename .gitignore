@@ -1,3 +1,8 @@
+# IDE
+.idea/
+/target/
+/src/test/resources/apps/*
+
 # Compiled class file
 *.class
 
@@ -19,6 +24,9 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Appium
+appium-mobile-tests.iml
+
+# virtual machine crash logs
 hs_err_pid*
 replay_pid*
