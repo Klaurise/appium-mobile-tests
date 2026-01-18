@@ -1,6 +1,7 @@
 package tests;
 
 import base.BaseTest;
+import data.CheckoutData;
 import data.LoginData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -11,11 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ProductTest extends BaseTest {
 
-    private final String PRODUCT_NAME = "Sauce Labs Onesie";
     private final String AMOUNT = "1";
-    private final String FIRST_NAME = "Jane";
-    private final String LAST_NAME = "Doe";
-    private final String ZIP_CODE = "02-310 Alabama";
+    private final String PRODUCT_NAME = "Sauce Labs Onesie";
 
     @Test
     @Tag("Regression")
@@ -48,7 +46,7 @@ public class ProductTest extends BaseTest {
         assertTrue(cartPage.isElementDisplayed(cartPage.getContinueShoppingButton()));
 
         cartPage.clickCheckoutButton();
-        checkoutInformationPage.fillCheckoutInformation(FIRST_NAME, LAST_NAME, ZIP_CODE);
+        checkoutInformationPage.fillCheckoutInformation(CheckoutData.STANDARD_ADDRESS);
         checkoutInformationPage.clickContinueButton();
         assertEquals(AMOUNT, checkoutOverviewPage.getItemAmount());
         assertTrue(checkoutOverviewPage.isItemTotalCorrect(price));
