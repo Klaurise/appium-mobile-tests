@@ -3,15 +3,13 @@ package base;
 import drivers.DriverManager;
 import io.appium.java_client.AppiumDriver;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.util.Map;
-
+@ExtendWith(ScreenshotTestWatcher.class)
 public class BaseTest {
 
     protected static AppiumDriver driver;
-    private final String APP_ID = "com.swaglabsmobileapp";
 
     @BeforeAll
     public static void setUp() {
@@ -19,14 +17,6 @@ public class BaseTest {
         DriverManager.initializeDriver();
         driver = DriverManager.getDriver();
         System.out.println("===> Test setup completed <===");
-    }
-
-    @AfterEach
-    public void resetApp() {
-        System.out.println("===> Resetting app <===");
-        driver.executeScript("mobile: clearApp", Map.of("appId", APP_ID));
-        driver.executeScript("mobile: activateApp", Map.of("appId", APP_ID));
-        System.out.println("===> App reset completed <===");
     }
 
     @AfterAll
