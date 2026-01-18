@@ -4,6 +4,7 @@ import base.BaseTest;
 import data.CheckoutData;
 import data.LoginData;
 import io.qameta.allure.Allure;
+import io.qameta.allure.Issue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -13,13 +14,33 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ProductTest extends BaseTest {
 
-    private final String AMOUNT = "1";
     private final String PRODUCT_NAME = "Sauce Labs Onesie";
 
+    // BUG
+    // Empty Cart Checkout Vulnerability
+    //
+    // Description:
+    // The application allows users to proceed to checkout with
+    // an empty shopping cart.
+    //
+    // Current Behavior:
+    // - user can click "CHECKOUT" button with zero items in cart
+    // - no validation or error message is displayed
+    //
+    // Expected Behavior:
+    // - checkout button should be disabled when cart is empty
+    // - or a warning message should inform the user to add items first
+    //
+    // This is an application bug, not a test issue.
+
     @Test
+    @Issue("JIRA-48")
     @Tag("Regression")
     @DisplayName("Buy product, complete the order and logout")
     public void completeOrder() {
+
+        final String AMOUNT = "1";
+
         LoginPage loginPage = new LoginPage(driver);
         ProductsPage productsPage = new ProductsPage(driver);
         ProductDetailsPage productDetailsPage = new ProductDetailsPage(driver);
@@ -57,9 +78,6 @@ public class ProductTest extends BaseTest {
 
         Allure.step("Proceed to checkout", () -> {
             cartPage.clickCheckoutButton();
-        });
-
-        Allure.step("Fill checkout information", () -> {
             checkoutInformationPage.fillCheckoutInformation(CheckoutData.STANDARD_ADDRESS);
             checkoutInformationPage.clickContinueButton();
         });
@@ -74,8 +92,14 @@ public class ProductTest extends BaseTest {
             assertTrue(checkoutCompletedPage.isCheckoutCompleted());
         });
 
-        Allure.step("Logout from application", () -> {
+        Allure.step("Check cart after transaction", () -> {
             checkoutCompletedPage.clickBackHomeButton();
+            assertTrue(productsPage.isProductsPageVisible());
+            cartPage.openCart();
+            assertFalse(cartPage.isElementDisplayed(cartPage.getCheckoutButton()));
+        });
+
+        Allure.step("Logout from application", () -> {
             sideMenu.logout();
             assertTrue(loginPage.isLoginPageVisible());
         });
