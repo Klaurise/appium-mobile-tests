@@ -59,4 +59,8 @@ public class ConfigReader {
     public static int getImplicitWait() {
         return Integer.parseInt(getProperty("implicit.wait"));
     }
+
+    public static int getIExplicitWait() {
+        return Integer.parseInt(getProperty("explicit.wait"));
+    }
 }
