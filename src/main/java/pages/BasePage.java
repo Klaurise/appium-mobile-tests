@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.ConfigReader;
 
 import java.time.Duration;
 
@@ -17,12 +18,16 @@ public class BasePage {
 
     public BasePage(AppiumDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(ConfigReader.getIExplicitWait()));
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
     public void waitForClickability(WebElement element) {
         wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+
+    protected void waitForInvisibility(WebElement element) {
+        wait.until(ExpectedConditions.invisibilityOf(element));
     }
 
     public void click(WebElement element) {
