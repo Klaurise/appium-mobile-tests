@@ -3,6 +3,7 @@ package tests;
 import base.BaseTest;
 import data.CheckoutData;
 import data.LoginData;
+import io.qameta.allure.Allure;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -28,34 +29,55 @@ public class ProductTest extends BaseTest {
         CheckoutCompletedPage checkoutCompletedPage = new CheckoutCompletedPage(driver);
         SideMenu sideMenu = new SideMenu(driver);
 
-        loginPage.login(LoginData.STANDARD_USER.getUsername(), LoginData.STANDARD_USER.getPassword());
-        assertTrue(productsPage.isProductsPageVisible());
+        Allure.step("Login to application", () -> {
+            loginPage.login(LoginData.STANDARD_USER.getUsername(), LoginData.STANDARD_USER.getPassword());
+            assertTrue(productsPage.isProductsPageVisible());
+        });
 
-        productsPage.openProductDetailsView(PRODUCT_NAME);
-        assertTrue(productDetailsPage.isProductNameDisplayed(PRODUCT_NAME));
+        Allure.step("Select product from catalog", () -> {
+            productsPage.openProductDetailsView(PRODUCT_NAME);
+            assertTrue(productDetailsPage.isProductNameDisplayed(PRODUCT_NAME));
+        });
+
         String price = productDetailsPage.getProductPrice();
 
-        productDetailsPage.clickAddToCartButton();
-        assertEquals(AMOUNT, productDetailsPage.getCartItemCount());
+        Allure.step("Add product to cart", () -> {
+            productDetailsPage.clickAddToCartButton();
+            assertEquals(AMOUNT, productDetailsPage.getCartItemCount());
+        });
 
-        cartPage.openCart();
-        assertTrue(cartPage.isProductNameDisplayed(PRODUCT_NAME));
-        assertEquals(price, cartPage.getItemPrice());
-        assertEquals(AMOUNT, cartPage.getItemAmount());
-        assertTrue(cartPage.isElementDisplayed(cartPage.getRemoveButton()));
-        assertTrue(cartPage.isElementDisplayed(cartPage.getContinueShoppingButton()));
+        Allure.step("Open cart and verify product", () -> {
+            cartPage.openCart();
+            assertTrue(cartPage.isProductNameDisplayed(PRODUCT_NAME));
+            assertEquals(price, cartPage.getItemPrice());
+            assertEquals(AMOUNT, cartPage.getItemAmount());
+            assertTrue(cartPage.isElementDisplayed(cartPage.getRemoveButton()));
+            assertTrue(cartPage.isElementDisplayed(cartPage.getContinueShoppingButton()));
+        });
 
-        cartPage.clickCheckoutButton();
-        checkoutInformationPage.fillCheckoutInformation(CheckoutData.STANDARD_ADDRESS);
-        checkoutInformationPage.clickContinueButton();
-        assertEquals(AMOUNT, checkoutOverviewPage.getItemAmount());
-        assertTrue(checkoutOverviewPage.isItemTotalCorrect(price));
+        Allure.step("Proceed to checkout", () -> {
+            cartPage.clickCheckoutButton();
+        });
 
-        checkoutOverviewPage.clickFinishButton();
-        assertTrue(checkoutCompletedPage.isCheckoutCompleted());
+        Allure.step("Fill checkout information", () -> {
+            checkoutInformationPage.fillCheckoutInformation(CheckoutData.STANDARD_ADDRESS);
+            checkoutInformationPage.clickContinueButton();
+        });
 
-        checkoutCompletedPage.clickBackHomeButton();
-        sideMenu.logout();
-        assertTrue(loginPage.isLoginPageVisible());
+        Allure.step("Review order summary", () -> {
+            assertEquals(AMOUNT, checkoutOverviewPage.getItemAmount());
+            assertTrue(checkoutOverviewPage.isItemTotalCorrect(price));
+        });
+
+        Allure.step("Finish transaction", () -> {
+            checkoutOverviewPage.clickFinishButton();
+            assertTrue(checkoutCompletedPage.isCheckoutCompleted());
+        });
+
+        Allure.step("Logout from application", () -> {
+            checkoutCompletedPage.clickBackHomeButton();
+            sideMenu.logout();
+            assertTrue(loginPage.isLoginPageVisible());
+        });
     }
 }

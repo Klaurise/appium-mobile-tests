@@ -1,6 +1,7 @@
 package tests;
 
 import base.BaseTest;
+import io.qameta.allure.Allure;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -29,11 +30,16 @@ public class SecurityTest extends BaseTest {
         LoginPage loginPage = new LoginPage(driver);
         ProductsPage productsPage = new ProductsPage(driver);
 
-        for (int i = 0; i < 5; i++) {
-            loginPage.login(LoginData.STANDARD_USER.getUsername(), loginPage.generateRandomPassword());
-            assertTrue((loginPage.isElementDisplayed(loginPage.getErrorBanner())));
-        }
-        loginPage.login(LoginData.STANDARD_USER.getUsername(), LoginData.STANDARD_USER.getPassword());
-        assertFalse(productsPage.isProductsPageVisible());
+        Allure.step("Perform multiple failed login attempts", () -> {
+            for (int i = 0; i < 5; i++) {
+                loginPage.login(LoginData.STANDARD_USER.getUsername(), loginPage.generateRandomPassword());
+                assertTrue(loginPage.isElementDisplayed(loginPage.getErrorBanner()));
+            }
+        });
+
+        Allure.step("Verify account is locked after brute force attempts", () -> {
+            loginPage.login(LoginData.STANDARD_USER.getUsername(), LoginData.STANDARD_USER.getPassword());
+            assertFalse(productsPage.isProductsPageVisible());
+        });
     }
 }
