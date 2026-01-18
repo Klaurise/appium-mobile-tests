@@ -22,5 +22,6 @@ public class CheckoutCompletedPage extends BasePage {
 
     public void clickBackHomeButton() {
         click(backHomeButton);
+        waitForInvisibility(backHomeButton);
     }
 }
