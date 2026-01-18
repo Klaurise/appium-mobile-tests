@@ -1,10 +1,11 @@
 package pages;
 
+import data.CheckoutData;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import org.openqa.selenium.WebElement;
 
-public class CheckoutInformationPage extends BasePage{
+public class CheckoutInformationPage extends BasePage {
 
     public CheckoutInformationPage(AppiumDriver driver) {
         super(driver);
@@ -22,10 +23,10 @@ public class CheckoutInformationPage extends BasePage{
     @AndroidFindBy(accessibility = "test-CONTINUE")
     private WebElement continueButton;
 
-    public void fillCheckoutInformation(String firstName, String lastName, String zipNumber) {
-        sendKeys(firstNameInput, firstName);
-        sendKeys(lastNameInput, lastName);
-        sendKeys(zipCodeInput, zipNumber);
+    public void fillCheckoutInformation(CheckoutData checkoutData) {
+        sendKeys(firstNameInput, checkoutData.getFirstName());
+        sendKeys(lastNameInput, checkoutData.getLastName());
+        sendKeys(zipCodeInput, checkoutData.getZipCode());
     }
 
     public void clickContinueButton() {
