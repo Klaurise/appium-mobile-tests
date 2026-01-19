@@ -1,10 +1,10 @@
 package drivers;
 
-import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import utils.ConfigReader;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,39 +13,78 @@ import java.time.Duration;
 
 public class DriverManager {
 
-    private static final ThreadLocal<AppiumDriver> driver = new ThreadLocal<>();
+    private static final ThreadLocal<AndroidDriver> driver = new ThreadLocal<>();
 
-    public static AppiumDriver getDriver() {
+    public static AndroidDriver getDriver() {
         return driver.get();
     }
 
-    public static void setDriver(AppiumDriver driverInstance) {
+    public static void setDriver(AndroidDriver driverInstance) {
         driver.set(driverInstance);
     }
 
-    public static void initializeDriver() {
-        String platform = ConfigReader.getPlatform().toLowerCase();
-        System.out.println("Initializing driver for platform: " + platform);
-
+    public static void startEmulator(String emulatorName) {
+        System.out.println("===> Starting emulator: " + emulatorName + " <===");
         try {
-            AppiumDriver appiumDriver;
-            URL serverUrl = new URI(ConfigReader.getAppiumServerUrl()).toURL();
-            if (platform.equals("android")) {
-                appiumDriver = createAndroidDriver(serverUrl);
-            } else {
-                throw new IllegalArgumentException("Invalid platform: " + platform);
+            ProcessBuilder pb = new ProcessBuilder(
+                    System.getenv("ANDROID_HOME") + "/emulator/emulator",
+                    "-avd", emulatorName,
+                    "-no-snapshot-load"
+            );
+            pb.start();
+
+            waitForEmulatorReady();
+            System.out.println("===> Emulator started <===");
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to start emulator: " + emulatorName, e);
+        }
+    }
+
+    private static void waitForEmulatorReady() throws IOException, InterruptedException {
+        System.out.println("Waiting for emulator to be ready...");
+        int maxAttempts = 60;
+
+        for (int i = 0; i < maxAttempts; i++) {
+            Process process = new ProcessBuilder(
+                    System.getenv("ANDROID_HOME") + "/platform-tools/adb",
+                    "shell", "getprop", "sys.boot_completed"
+            ).start();
+
+            String output = new String(process.getInputStream().readAllBytes()).trim();
+            process.waitFor();
+
+            if ("1".equals(output)) {
+                System.out.println("Emulator is ready!");
+                return;
             }
 
-            appiumDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(ConfigReader.getImplicitWait()));
+            Thread.sleep(1000);
+        }
 
-            setDriver(appiumDriver);
-            System.out.println("Driver initialized successfully");
+        throw new RuntimeException("Emulator did not start within timeout");
+    }
+
+    public static void initializeDriver() {
+        System.out.println("===> Initializing Android driver <===");
+
+        try {
+            URL serverUrl = new URI(ConfigReader.getAppiumServerUrl()).toURL();
+            AndroidDriver androidDriver = createAndroidDriver(serverUrl);
+
+            androidDriver.
+                    manage().
+                    timeouts().
+                    implicitlyWait(Duration.ofSeconds(ConfigReader.getImplicitWait()));
+
+            setDriver(androidDriver);
+            System.out.println("===> Driver initialized successfully <===");
 
         } catch (MalformedURLException e) {
             System.err.println("Invalid Appium server URL: " + e.getMessage());
             throw new RuntimeException("Failed to initialize driver", e);
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            System.err.println("Invalid URI syntax: " + e.getMessage());
+            throw new RuntimeException("Failed to initialize driver", e);
         }
     }
 
@@ -64,7 +103,7 @@ public class DriverManager {
 
     public static void quitDriver() {
         if (driver.get() != null) {
-            System.out.println("Quitting driver");
+            System.out.println("Quitting driver...");
             driver.get().quit();
             driver.remove();
         }
