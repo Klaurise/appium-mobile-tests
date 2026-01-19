@@ -1,7 +1,7 @@
 package pages;
 
 import io.appium.java_client.AppiumBy;
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import lombok.Getter;
 import org.openqa.selenium.WebElement;
@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Getter
 public class LoginPage extends BasePage {
 
-    public LoginPage(AppiumDriver driver) {
+    public LoginPage(AndroidDriver driver) {
         super(driver);
     }
 

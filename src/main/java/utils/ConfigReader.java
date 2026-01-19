@@ -10,11 +10,9 @@ public class ConfigReader {
     private static final String CONFIG_PATH = "src/test/resources/config.properties";
 
     static {
-        try {
-            properties = new Properties();
-            FileInputStream fis = new FileInputStream(CONFIG_PATH);
+        properties = new Properties();
+        try (FileInputStream fis = new FileInputStream(CONFIG_PATH)) {
             properties.load(fis);
-            fis.close();
         } catch (IOException e) {
             throw new RuntimeException("Failed to load config file: " + CONFIG_PATH, e);
         }
@@ -28,20 +26,20 @@ public class ConfigReader {
         return value;
     }
 
-    public static String getPlatform() {
-        return getProperty("platform");
+    public static String getDeviceName() {
+        return System.getenv("DEVICE_NAME") != null
+                ? System.getenv("DEVICE_NAME")
+                : properties.getProperty("device.name");
+    }
+
+    public static String getPlatformVersion() {
+        return System.getenv("PLATFORM_VERSION") != null
+                ? System.getenv("PLATFORM_VERSION")
+                : properties.getProperty("platform.version");
     }
 
     public static String getAppiumServerUrl() {
         return getProperty("appium.server.url");
-    }
-
-    public static String getDeviceName() {
-        return getProperty("device.name");
-    }
-
-    public static String getPlatformVersion() {
-        return getProperty("platform.version");
     }
 
     public static String getAppPath() {
