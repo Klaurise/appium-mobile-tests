@@ -7,8 +7,6 @@ import org.openqa.selenium.WebElement;
 
 public class ProductDetailsPage extends BasePage {
 
-    private static final String ADD_TO_CART_BUTTON = "ADD TO CART";
-
     public ProductDetailsPage(AppiumDriver driver) {
         super(driver);
     }
@@ -16,12 +14,15 @@ public class ProductDetailsPage extends BasePage {
     @AndroidFindBy(accessibility = "test-Price")
     private WebElement productPrice;
 
+    @AndroidFindBy(accessibility = "test-ADD TO CART")
+    private WebElement addToCartButton;
+
     public String getProductPrice() {
         return productPrice.getText();
     }
 
     public void clickAddToCartButton() {
-        scrollAndClick(ADD_TO_CART_BUTTON);
+        click(addToCartButton);
     }
 
     public String getCartItemCount() {
