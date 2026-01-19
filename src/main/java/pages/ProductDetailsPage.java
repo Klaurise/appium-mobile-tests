@@ -11,6 +11,8 @@ public class ProductDetailsPage extends BasePage {
         super(driver);
     }
 
+    private static final String ADD_TO_CART_BUTTON = "ADD TO CART";
+
     @AndroidFindBy(accessibility = "test-Price")
     private WebElement productPrice;
 
@@ -22,7 +24,7 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void clickAddToCartButton() {
-        click(addToCartButton);
+        scrollAndClick(ADD_TO_CART_BUTTON);
     }
 
     public String getCartItemCount() {
