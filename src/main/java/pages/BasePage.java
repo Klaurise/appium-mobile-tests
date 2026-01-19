@@ -1,7 +1,7 @@
 package pages;
 
 import io.appium.java_client.AppiumBy;
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -13,12 +13,12 @@ import java.time.Duration;
 
 public class BasePage {
 
-    protected AppiumDriver driver;
+    protected AndroidDriver driver;
     protected WebDriverWait wait;
 
-    public BasePage(AppiumDriver driver) {
+    public BasePage(AndroidDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(ConfigReader.getIExplicitWait()));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(ConfigReader.getImplicitWait()));
         PageFactory.initElements(new AppiumFieldDecorator(driver), this);
     }
 
@@ -63,7 +63,7 @@ public class BasePage {
         return isElementDisplayed(product);
     }
 
-    protected String getValue(WebElement element) {
+    protected String getChildTextViewValue(WebElement element) {
         WebElement amountElement = element.findElement(
                 AppiumBy.xpath(".//android.widget.TextView")
         );

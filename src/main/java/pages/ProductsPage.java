@@ -1,17 +1,17 @@
 package pages;
 
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import org.openqa.selenium.WebElement;
 
 public class ProductsPage extends BasePage {
 
-    public ProductsPage(AppiumDriver driver) {
+    public ProductsPage(AndroidDriver driver) {
         super(driver);
     }
 
     @AndroidFindBy(accessibility = "test-Cart")
-    private WebElement cardButton;
+    private WebElement cartButton;
 
     @AndroidFindBy(uiAutomator = "new UiSelector().text(\"PRODUCTS\")")
     private WebElement productsTitle;
@@ -20,7 +20,7 @@ public class ProductsPage extends BasePage {
     private WebElement filterOption;
 
     public boolean isProductsPageVisible() {
-        return isElementDisplayed(cardButton) && isElementDisplayed(productsTitle) && isElementDisplayed(filterOption);
+        return isElementDisplayed(cartButton) && isElementDisplayed(productsTitle) && isElementDisplayed(filterOption);
     }
 
     public void openProductDetailsView(String productName) {

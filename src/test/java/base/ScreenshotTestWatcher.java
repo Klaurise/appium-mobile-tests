@@ -1,11 +1,12 @@
 package base;
 
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import io.qameta.allure.Allure;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.OutputType;
+import utils.ConfigReader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,11 +19,11 @@ import java.util.Map;
 
 public class ScreenshotTestWatcher implements TestWatcher {
 
-    private final String APP_ID = "com.swaglabsmobileapp";
+    private final String APP_ID = ConfigReader.getAppPackage();
 
     @Override
     public void testFailed(ExtensionContext context, Throwable cause) {
-        AppiumDriver driver = BaseTest.driver;
+        AndroidDriver driver = BaseTest.driver;
 
         if (driver == null) {
             System.out.println("Driver is null - cannot take screenshot");
@@ -53,13 +54,13 @@ public class ScreenshotTestWatcher implements TestWatcher {
 
     @Override
     public void testSuccessful(ExtensionContext context) {
-        AppiumDriver driver = BaseTest.driver;
+        AndroidDriver driver = BaseTest.driver;
         if (driver != null) {
             resetApp(driver);
         }
     }
 
-    private void resetApp(AppiumDriver driver) {
+    private void resetApp(AndroidDriver driver) {
         System.out.println("===> Resetting app <===");
         driver.executeScript("mobile: clearApp", Map.of("appId", APP_ID));
         driver.executeScript("mobile: activateApp", Map.of("appId", APP_ID));
