@@ -16,6 +16,15 @@ public class ProductTest extends BaseTest {
 
     private final String PRODUCT_NAME = "Sauce Labs Onesie";
 
+    LoginPage loginPage = new LoginPage(driver);
+    ProductsPage productsPage = new ProductsPage(driver);
+    ProductDetailsPage productDetailsPage = new ProductDetailsPage(driver);
+    CartPage cartPage = new CartPage(driver);
+    CheckoutInformationPage checkoutInformationPage = new CheckoutInformationPage(driver);
+    CheckoutOverviewPage checkoutOverviewPage = new CheckoutOverviewPage(driver);
+    CheckoutCompletedPage checkoutCompletedPage = new CheckoutCompletedPage(driver);
+    SideMenu sideMenu = new SideMenu(driver);
+
     // BUG
     // Empty Cart Checkout Vulnerability
     //
@@ -35,23 +44,16 @@ public class ProductTest extends BaseTest {
 
     @Test
     @Issue("JIRA-48")
-    @Tag("Regression")
+    @Tag("Smoke")
     @DisplayName("Buy product, complete the order and logout")
-    public void completeOrder() {
+    public void completeOrderTest() {
 
         final String AMOUNT = "1";
 
-        LoginPage loginPage = new LoginPage(driver);
-        ProductsPage productsPage = new ProductsPage(driver);
-        ProductDetailsPage productDetailsPage = new ProductDetailsPage(driver);
-        CartPage cartPage = new CartPage(driver);
-        CheckoutInformationPage checkoutInformationPage = new CheckoutInformationPage(driver);
-        CheckoutOverviewPage checkoutOverviewPage = new CheckoutOverviewPage(driver);
-        CheckoutCompletedPage checkoutCompletedPage = new CheckoutCompletedPage(driver);
-        SideMenu sideMenu = new SideMenu(driver);
-
         Allure.step("Login to application", () -> {
-            loginPage.login(LoginData.STANDARD_USER.getUsername(), LoginData.STANDARD_USER.getPassword());
+            loginPage.login(
+                    LoginData.STANDARD_USER.getUsername(),
+                    LoginData.STANDARD_USER.getPassword());
             assertTrue(productsPage.isProductsPageVisible());
         });
 
@@ -102,6 +104,63 @@ public class ProductTest extends BaseTest {
         Allure.step("Logout from application", () -> {
             sideMenu.logout();
             assertTrue(loginPage.isLoginPageVisible());
+        });
+    }
+
+    @Test
+    @Tag("Regression")
+    @DisplayName("Validate error messages for empty required fields")
+    public void emptyRequiredFieldsTest() {
+
+        CheckoutData firstName = CheckoutData.builder()
+                .firstName("@^&AnS1")
+                .build();
+        CheckoutData lastName = CheckoutData.builder()
+                .lastName("_____")
+                .build();
+        CheckoutData zipCode = CheckoutData.builder()
+                .zipCode("ABCDEFGHIJKLMNOPRSTUWXYZ")
+                .build();
+
+        Allure.step("Login and proceed to Checkout Information Screen", () -> {
+            loginPage.login(
+                    LoginData.STANDARD_USER.getUsername(),
+                    LoginData.STANDARD_USER.getPassword());
+            productsPage.openProductDetailsView(PRODUCT_NAME);
+            productDetailsPage.clickAddToCartButton();
+            cartPage.openCart();
+            cartPage.clickCheckoutButton();
+            assertTrue(checkoutInformationPage
+                    .isElementDisplayed(checkoutInformationPage.getCheckoutInformationHeader()));
+        });
+
+        Allure.step("Verify empty First Name field error", () -> {
+            checkoutInformationPage.clickContinueButton();
+            assertEquals(
+                    "First Name is required",
+                    checkoutInformationPage.getFirstNameErrorText().getText());
+        });
+
+        Allure.step("Verify empty Last Name field error", () -> {
+            checkoutInformationPage.fillFirstName(firstName);
+            checkoutInformationPage.clickContinueButton();
+            assertEquals(
+                    "Last Name is required",
+                    checkoutInformationPage.getLastNameErrorText().getText());
+        });
+
+        Allure.step("Verify empty Zip/Postal Code field error", () -> {
+            checkoutInformationPage.fillLastName(lastName);
+            checkoutInformationPage.clickContinueButton();
+            assertEquals(
+                    "Postal Code is required",
+                    checkoutInformationPage.getZipCodeErrorText().getText());
+        });
+
+        Allure.step("Checkout Information screen completed", () -> {
+            checkoutInformationPage.fillZipCode(zipCode);
+            checkoutInformationPage.clickContinueButton();
+            assertTrue(checkoutOverviewPage.isHeaderVisible());
         });
     }
 }
