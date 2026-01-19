@@ -26,6 +26,10 @@ public class BasePage {
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
+    protected void waitForInvisibility(WebElement element) {
+        wait.until(ExpectedConditions.invisibilityOf(element));
+    }
+
     public void click(WebElement element) {
         waitForClickability(element);
         element.click();

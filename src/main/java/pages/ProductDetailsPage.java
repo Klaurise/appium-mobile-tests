@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 
 public class ProductDetailsPage extends BasePage {
 
+    private static final String ADD_TO_CART_BUTTON = "ADD TO CART";
+
     public ProductDetailsPage(AndroidDriver driver) {
         super(driver);
     }
@@ -22,7 +24,7 @@ public class ProductDetailsPage extends BasePage {
     }
 
     public void clickAddToCartButton() {
-        click(addToCartButton);
+        scrollAndClick(ADD_TO_CART_BUTTON);
     }
 
     public String getCartItemCount() {
