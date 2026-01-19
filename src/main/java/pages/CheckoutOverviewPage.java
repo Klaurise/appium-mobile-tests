@@ -9,11 +9,11 @@ import org.openqa.selenium.WebElement;
 
 public class CheckoutOverviewPage extends BasePage {
 
+    private static final String FINISH_BUTTON_DESCRIPTION = "FINISH";
+
     public CheckoutOverviewPage(AndroidDriver driver) {
         super(driver);
     }
-
-    private static final String FINISH_BUTTON_DESCRIPTION = "FINISH";
 
     @Getter
     @AndroidFindBy(uiAutomator = "new UiSelector().text(\"CHECKOUT: OVERVIEW\")")

@@ -7,11 +7,11 @@ import org.openqa.selenium.WebElement;
 
 public class ProductDetailsPage extends BasePage {
 
+    private static final String ADD_TO_CART_BUTTON = "ADD TO CART";
+
     public ProductDetailsPage(AndroidDriver driver) {
         super(driver);
     }
-
-    private static final String ADD_TO_CART_BUTTON = "ADD TO CART";
 
     @AndroidFindBy(accessibility = "test-Price")
     private WebElement productPrice;
