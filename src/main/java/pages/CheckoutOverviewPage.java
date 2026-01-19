@@ -7,7 +7,6 @@ import lombok.Getter;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
-@Getter
 public class CheckoutOverviewPage extends BasePage {
 
     private static final String FINISH_BUTTON_DESCRIPTION = "FINISH";
@@ -16,8 +15,16 @@ public class CheckoutOverviewPage extends BasePage {
         super(driver);
     }
 
+    @Getter
+    @AndroidFindBy(uiAutomator = "new UiSelector().text(\"CHECKOUT: OVERVIEW\")")
+    private WebElement checkoutOverviewHeader;
+
     @AndroidFindBy(accessibility = "test-Amount")
     private WebElement itemAmount;
+
+    public boolean isHeaderVisible(){
+        return isElementDisplayed(checkoutOverviewHeader);
+    }
 
     public void clickFinishButton() {
         scrollAndClick(FINISH_BUTTON_DESCRIPTION);
