@@ -1,12 +1,12 @@
 package pages;
 
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import org.openqa.selenium.WebElement;
 
 public class SideMenu extends BasePage{
 
-    public SideMenu(AppiumDriver driver) {
+    public SideMenu(AndroidDriver driver) {
         super(driver);
     }
 

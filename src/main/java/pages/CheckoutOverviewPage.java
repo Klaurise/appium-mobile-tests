@@ -1,7 +1,7 @@
 package pages;
 
 import io.appium.java_client.AppiumBy;
-import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import lombok.Getter;
 import org.openqa.selenium.NoSuchElementException;
@@ -12,7 +12,7 @@ public class CheckoutOverviewPage extends BasePage {
 
     private static final String FINISH_BUTTON_DESCRIPTION = "FINISH";
 
-    public CheckoutOverviewPage(AppiumDriver driver) {
+    public CheckoutOverviewPage(AndroidDriver driver) {
         super(driver);
     }
 
@@ -24,7 +24,7 @@ public class CheckoutOverviewPage extends BasePage {
     }
 
     public String getItemAmount() {
-        return getValue(itemAmount);
+        return getChildTextViewValue(itemAmount);
     }
 
     public boolean isItemTotalCorrect(String expectedPrice) {
