@@ -23,7 +23,9 @@ public class LoginLogoutTest extends BaseTest {
         SideMenu sideMenu = new SideMenu(driver);
 
         Allure.step("Login with valid credentials", () -> {
-            loginPage.login(LoginData.STANDARD_USER.getUsername(), LoginData.STANDARD_USER.getPassword());
+            loginPage.login(
+                    LoginData.STANDARD_USER.getUsername(),
+                    LoginData.STANDARD_USER.getPassword());
             assertTrue(productsPage.isProductsPageVisible());
         });
 
@@ -40,12 +42,16 @@ public class LoginLogoutTest extends BaseTest {
         LoginPage loginPage = new LoginPage(driver);
 
         Allure.step("Login with locked out user credentials", () -> {
-            loginPage.login(LoginData.LOCKED_OUT_USER.getUsername(), LoginData.LOCKED_OUT_USER.getPassword());
+            loginPage.login(
+                    LoginData.LOCKED_OUT_USER.getUsername(),
+                    LoginData.LOCKED_OUT_USER.getPassword());
         });
 
         Allure.step("Verify error message", () -> {
             assertTrue(loginPage.isElementDisplayed(loginPage.getErrorBanner()));
-            assertEquals("Sorry, this user has been locked out.", loginPage.getErrorText());
+            assertEquals(
+                    "Sorry, this user has been locked out.",
+                    loginPage.getErrorText());
         });
     }
 
@@ -56,12 +62,16 @@ public class LoginLogoutTest extends BaseTest {
         LoginPage loginPage = new LoginPage(driver);
 
         Allure.step("Login with invalid credentials", () -> {
-            loginPage.login(LoginData.INVALID_USER.getUsername(), LoginData.INVALID_USER.getPassword());
+            loginPage.login(
+                    LoginData.INVALID_USER.getUsername(),
+                    LoginData.INVALID_USER.getPassword());
         });
 
         Allure.step("Verify error message", () -> {
             assertTrue(loginPage.isElementDisplayed(loginPage.getErrorBanner()));
-            assertEquals("Username and password do not match any user in this service.", loginPage.getErrorText());
+            assertEquals(
+                    "Username and password do not match any user in this service.",
+                    loginPage.getErrorText());
         });
     }
 }
