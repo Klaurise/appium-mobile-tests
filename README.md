@@ -12,7 +12,7 @@ The goal of the project is to demonstrate:
 
 ## 🛠 Tech Stack
 
-** Java 21
+* Java 21
 * Appium
 * Selenium
 * JUnit 5
@@ -56,8 +56,8 @@ Practices and patterns used:
 
 4. **Appium** installed:
 ```bash
-   npm install -g appium
-   appium driver install uiautomator2
+ npm install -g appium
+ appium driver install uiautomator2
 ```
 
 5. **ANDROID_HOME** environment variable set
@@ -67,27 +67,27 @@ Practices and patterns used:
 
 7. Start Appium server before running tests:
 ```bash
-   appium
+ appium
 ```
 
 ## ▶️ How to Run Tests
 
 Default run (uses config.properties):
 ```bash
-  mvn clean test
+ mvn clean test
 ```
 
 Run tests on a specific emulator (using environment variable):
 
 macOS / Linux:
 ```bash
-  DEVICE_NAME=Phone_API_36 mvn clean test
+ DEVICE_NAME=Phone_API_36 mvn clean test
 ```
 
 Windows PowerShell:
 ```powershell
-$env:DEVICE_NAME="Phone_API_36"
-mvn clean test
+ $env:DEVICE_NAME="Phone_API_36"
+ mvn clean test
 ```
 
 If environment variable is not provided, default value from `config.properties` is used.
@@ -112,7 +112,7 @@ The project uses Allure Reports to provide:
 
 To generate and open the report:
 ```bash
-  mvn allure:serve
+ mvn allure:serve
 ```
 
 ## ⚠️ Known Issues
