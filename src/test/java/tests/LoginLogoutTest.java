@@ -41,11 +41,9 @@ public class LoginLogoutTest extends BaseTest {
     public void testLockedOutLogin() {
         LoginPage loginPage = new LoginPage(driver);
 
-        Allure.step("Login with locked out user credentials", () -> {
-            loginPage.login(
-                    LoginData.LOCKED_OUT_USER.getUsername(),
-                    LoginData.LOCKED_OUT_USER.getPassword());
-        });
+        Allure.step("Login with locked out user credentials", () -> loginPage.login(
+                LoginData.LOCKED_OUT_USER.getUsername(),
+                LoginData.LOCKED_OUT_USER.getPassword()));
 
         Allure.step("Verify error message", () -> {
             assertTrue(loginPage.isElementDisplayed(loginPage.getErrorBanner()));
@@ -61,11 +59,9 @@ public class LoginLogoutTest extends BaseTest {
     public void testInvalidCredentials() {
         LoginPage loginPage = new LoginPage(driver);
 
-        Allure.step("Login with invalid credentials", () -> {
-            loginPage.login(
-                    LoginData.INVALID_USER.getUsername(),
-                    LoginData.INVALID_USER.getPassword());
-        });
+        Allure.step("Login with invalid credentials", () -> loginPage.login(
+                LoginData.INVALID_USER.getUsername(),
+                LoginData.INVALID_USER.getPassword()));
 
         Allure.step("Verify error message", () -> {
             assertTrue(loginPage.isElementDisplayed(loginPage.getErrorBanner()));
