@@ -46,6 +46,30 @@ Practices and patterns used:
 * Allure steps and annotations for readable test reports
 * Allure reporting with screenshots on failure
 
+## ⚙️ Prerequisites
+
+1. **Java 21** installed
+
+2. **Maven** installed
+
+3. **Android Studio** with at least one Android emulator configured
+
+4. **Appium** installed:
+```bash
+   npm install -g appium
+   appium driver install uiautomator2
+```
+
+5. **ANDROID_HOME** environment variable set
+
+6. Place the `Android.SauceLabs.Mobile.Sample.app.2.7.1.apk` file in `src/test/resources/apps/` folder.
+   APK can be downloaded from: https://github.com/saucelabs/sample-app-mobile/releases
+
+7. Start Appium server before running tests:
+```bash
+   appium
+```
+
 ## ▶️ How to Run Tests
 
 Default run (uses config.properties):
